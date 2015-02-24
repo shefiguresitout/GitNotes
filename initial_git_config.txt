@@ -1,8 +1,10 @@
-
-
+git config --global core.autocrlf true
 git config --global push.default upstream
 git config --global merge.conflictstyle diff3
 git config --global core.editor "<path to editor>"
+git config --global credential.helper wincred
+see here:
+https://help.github.com/articles/caching-your-github-password-in-git/
 ***
 .bash_profile contains:
 # Enable tab completion

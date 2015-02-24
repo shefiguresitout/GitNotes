@@ -1,1 +1,8 @@
 git clone https://github.com/udacity/asteroids.git
+Have to do: git checkout coins before trying the first merge
+
+Double check the state of your files. If you run git log while the master branch is checked out, you should see Caroline's
+"Add color" commit as the second-most-recent, and the most recent should be your commit fixing the bullet bug.
+If you use git diff to compare your commit to Caroline's, your commit should introduce the line
+this.delayBeforeBullet = 10; on line 424.
+The line should be indented to the same level as the line below it using only spaces (no tabs), and the line should have no spaces after it.

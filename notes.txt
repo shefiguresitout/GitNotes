@@ -1,13 +1,11 @@
 commit is a snapshot of every file in a repository at the time the commit is made.
 checking out a commit means resetting all of your files to how they were at the time that commit was made.
 
-
 git init in the directory containing files turns it into a repository
 git status shows which files have changed since the last commit
 git log shows a history of commits
 git log --stat shows which files changed in each commit
-git add puts the file into a staging area
-git commit puts the contents of the staging area into the repository
+
 git rm --cached unstages what's in the staging area
 git diff id1 id2 shows differences between commits with ids id1 and id2
 git diff with no arguments compares files in working directory to files in staging area that haven't been added
@@ -19,7 +17,15 @@ working directory is copy of most recent commit until changes made to file(s)
 
 git reset --hard discards any changes in the working directory and the staging area.  This is not reversible because changes were never committed.  Can't get changes back.
 
-git checkout master
+git add puts the file into a staging area
+git commit puts the contents of the staging area into the repository
+If you accidentally add a file to the staging area, you can remove it using git reset.
+For example, if you accidentally add lesson_2_reflections.txt, but don't want it to be committed yet, run
+git reset lesson_2_reflections.txt
+and the file will be removed from the staging area, but it will still be in your working directory.
+
+
+git checkout master brings you back to the tip of the master branch if you checked out an older commit and have a detached HEAD.
 
 branch is label for commit
 
