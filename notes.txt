@@ -1,0 +1,128 @@
+
+
+git config --global push.default upstream
+git config --global merge.conflictstyle diff3
+git config --global core.editor "<path to editor>"
+***
+.bash_profile contains:
+# Enable tab completion
+source ~/git-completion.bash
+
+# colors!
+green="\[\033[0;32m\]"
+blue="\[\033[0;34m\]"
+purple="\[\033[0;35m\]"
+reset="\[\033[0m\]"
+
+# Change command prompt
+source ~/git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=1
+# '\u' adds the name of the current user to the prompt
+# '\$(__git_ps1)' adds git-related stuff
+# '\W' adds the name of the current directory
+export PS1="$purple\u$green\$(__git_ps1)$blue \W $ $reset"
+
+alias em='C:/Emacs/bin/runemacs.exe'
+***
+tab completion comes from here:
+https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+prompt comes from here:
+https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+
+
+commit is a snapshot of every file in a repository at the time the commit is made.
+checking out a commit means resetting all of your files to how they were at the time that commit was made.
+
+
+git clone https://github.com/udacity/asteroids.git
+git init in the directory containing files turns it into a repository
+git status shows which files have changed since the last commit
+git log shows a history of commits
+git log --stat shows which files changed in each commit
+git add puts the file into a staging area
+git commit puts the contents of the staging area into the repository
+git rm --cached unstages what's in the staging area
+git diff id1 id2 shows differences between commits with ids id1 and id2
+git diff with no arguments compares files in working directory to files in staging area that haven't been added
+git diff --staged compares files in staging area with files in most recent commit
+
+repository has most recent commit
+staging area is copy of most recent commit until changes added
+working directory is copy of most recent commit until changes made to file(s)
+
+git reset --hard discards any changes in the working directory and the staging area.  This is not reversible because changes were never committed.  Can't get changes back.
+
+git checkout master
+
+branch is label for commit
+
+master is the main branch, autocreated by git
+
+the head is the current checked out commit
+
+checking out an old commit without creating a branch gives detached head state
+
+if you check out a branch then make a commit, the branch label autoupdates to the new commit, and stays checked out.  Current last commit in a branch is the tip of that branch.
+
+A given commit can have multiple branch labels, but a new commit will only affect the branch which is checked out.
+
+git branch shows branches; the current branch is starred
+
+git branch <branchname> creates a new branch
+
+git checkout <branchname> makes that the branch being operated on
+
+
+git log --graph --oneline master <branch2> gives visual representation of commit history
+
+remote branch is created by someone else
+
+every commit stores id of its parent.  commit doesn't care about branches.
+
+if you
+   -check out a commit that's not at the tip of a branch,
+   -make a new commit from there, and
+   -don't create a branch, then
+   -checkout an existing branch,
+   that commit is not reachable by any branch.
+   It's lost unless you save its id.  Git log won't show it.
+
+git checkout -b newbranchname ==
+git branch newbranchname
+git checkout newbranchname
+
+git merge keeps all lines that are in both files
+removes a line that was in the original file and removed in one version
+adds a line that wasn't in the original file and was added in one version
+
+deleting a branch after merging it into another branch just removes the label.  All the commits are still there.
+
+deleting a branch without merging it into another branch discards its commits- they all become unreachable.
+
+Git sorts commits based on the time they were created.
+
+
+git show shows the changes introduced between (?? the current) commit and its parent
+
+git show commit_id shows the changes introduced between a commit and its parent
+
+git branch -d <branchname> deletes a branch
+
+git checkout master
+git merge master <branchname>
+This will make the merged branch the master
+
+You could check out a different branch, in which case the label for the checked out branch will point to the new merged commit
+
+git merge <branchname...> merges all specified branches into currently checked out branch, so you should always check out the branch you want to point to the new commit.
+
+git merge uses the commit at point where the branches diverged and the contents of the branches being merged.
+
+git reset --hard HEAD~1 removes the last commit you've made.
+
+git gc does garbage collection for git, removing unreachable commits
+
+
+
+
+
