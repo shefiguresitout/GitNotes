@@ -1,40 +1,7 @@
-
-
-git config --global push.default upstream
-git config --global merge.conflictstyle diff3
-git config --global core.editor "<path to editor>"
-***
-.bash_profile contains:
-# Enable tab completion
-source ~/git-completion.bash
-
-# colors!
-green="\[\033[0;32m\]"
-blue="\[\033[0;34m\]"
-purple="\[\033[0;35m\]"
-reset="\[\033[0m\]"
-
-# Change command prompt
-source ~/git-prompt.sh
-export GIT_PS1_SHOWDIRTYSTATE=1
-# '\u' adds the name of the current user to the prompt
-# '\$(__git_ps1)' adds git-related stuff
-# '\W' adds the name of the current directory
-export PS1="$purple\u$green\$(__git_ps1)$blue \W $ $reset"
-
-alias em='C:/Emacs/bin/runemacs.exe'
-***
-tab completion comes from here:
-https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-prompt comes from here:
-https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-
-
 commit is a snapshot of every file in a repository at the time the commit is made.
 checking out a commit means resetting all of your files to how they were at the time that commit was made.
 
 
-git clone https://github.com/udacity/asteroids.git
 git init in the directory containing files turns it into a repository
 git status shows which files have changed since the last commit
 git log shows a history of commits
