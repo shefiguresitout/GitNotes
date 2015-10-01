@@ -1,57 +1,151 @@
-commit is a snapshot of every file in a repository at the time the commit is made.
-checking out a commit means resetting all of your files to how they were at the time that commit was made.
-
 git init in the directory containing files turns it into a repository
-git status shows which files have changed since the last commit
-git log shows a history of commits
-git log --stat shows which files changed in each commit
+top directory has a .git file where all git info is stored.  Completely independent of any other repo
 
-git rm --cached unstages what's in the staging area
-git diff id1 id2 shows differences between commits with ids id1 and id2
+
+# ********************************
+# Messages
+# ********************************
+
+Best practice:
+one line for small change (< 50 characters)
+one line summary plus multiple lines for larger changes (< 72 characters)
+
+# ********************************
+# git log
+# ********************************
+git log shows these messages
+git log --stat shows which files changed in each commit
+git log -n <#> or just git log -<#>  # shows # commits
+git log -since=<date> -until=<date> -Author=<name>  #  after and before are synonyms for since and until
+# date form is YYYY-MM-DD or can be things like "2 weeks ago", "3 days ago", etc.
+git log --grep="<regex>"
+git log --oneline # gives compressed version
+git log --format=oneline # shows full sha
+git log --graph --oneline [master <branch>] --decorate # gives visual representation of commit history
+git log <filename> # show just commits for that file
+git log -p # shows diffs
+git log --format=short|medium|full|fuller|email|raw # medium is default
+
+git show <SHA> # shows what happened in a commit
+# ********************************
+# 
+# ********************************
+Typical workflow:
+edit file(s), add file(s), commit change
+
+git add puts the file(s) into a staging area; can add . or an individual file
+git commit puts the contents of the staging area into the repository
+That way if you don't want to put everything you've changed into the repository, only those files that
+have been added to the staging area will be committed to the repository
+
+commits are identified by SHA-1 checksum of the changes which validate that the data hasn't changed.
+
+commit -m "message" adds the message without needing to go into the editor
+commit -a does add and commit together, but doesn't handle deletions and new files; git add then git commit would handle them
+The head is a pointer to the tip of the currently checked out branch *in the repository*.
+
+git status shows the difference between the working directory, staging index, and repository
+
+every commit stores id of its parent.  commit doesn't care about branches.
+
+# ********************************
+# git diff
+# ********************************
+
 git diff with no arguments compares files in working directory to files in staging area that haven't been added
 git diff --staged compares files in staging area with files in most recent commit
+git diff id1 id2 shows differences between commits with ids id1 and id2
+git diff id1 id2 <filename> shows changes to just that file
+git diff -b # ignores # of spaces changes
+git diff -w # ignores all white space changes
+git diff <branch1>..<branch2> --colorwords
 
-repository has most recent commit
-staging area is copy of most recent commit until changes added
-working directory is copy of most recent commit until changes made to file(s)
+# ********************************
+# Undoing Changes
+# ********************************
 
-git reset --hard discards any changes in the working directory and the staging area.  This is not reversible because changes were never committed.  Can't get changes back.
+To remove or rename a file:
+git rm <filename>
+git mv <filename>
 
-git add puts the file into a staging area
-git commit puts the contents of the staging area into the repository
+To undo a change:
+git checkout -- <file_or_dirname> # The -- says get files from the current branch
+checking out a commit means resetting all of your files to how they were at the time that commit was made.
+
+To unstage a file:
+git reset HEAD <filename>
 If you accidentally add a file to the staging area, you can remove it using git reset.
 For example, if you accidentally add lesson_2_reflections.txt, but don't want it to be committed yet, run
 git reset lesson_2_reflections.txt
 and the file will be removed from the staging area, but it will still be in your working directory.
 
+To unstage everything that's in the staging area:
+git rm --cached 
 
-git checkout master brings you back to the tip of the master branch if you checked out an older commit and have a detached HEAD.
+To modify the very most recent commit:
+git commit --amend
 
-branch is label for commit
+To undo back to an older commit:
+git revert <SHA>
 
+To irreversibly undo all changes since last commit:
+git reset --hard discards any changes in the working directory and the staging area.  
+This is not reversible because changes were never committed.  Can't get changes back.
+
+git reset --hard HEAD~1 removes the last commit you've made.
+
+git reset --soft moves HEAD pointer, doesn't change staging index and working directory
+git reset --mixed moves HEAD, clears staging index
+
+To get rid of untracked files:
+git clean -n # shows what would be removed
+git clean -f # forces the removal to happen
+
+# ********************************
+# Ignoring files
+# ********************************
+.gitignore in root working dir
+git config --global core.excludesfile ~/.gitconfigfiles/.gitignore_global # sets up global ignores
+Ignoring a file that's already in the repo, leaving it in the repo, leaving it in the wd:
+    put it in .gitignore
+    git rm --cached <filename>
+
+Git doesn't keep track of directories, only files.  To have git track an empty directory, it has to have 
+a file in it.  People do this with:
+touch .gitkeep
+in the empty directory
+
+# ********************************
+# Navigating the commit tree
+# ********************************
+<SHA|HEAD>^ is previous commit
+<SHA|HEAD>~<#> is #th previous commit
+<SHA1>..<SHA2> is a range of commits
+
+# ********************************
+# Branching
+# ********************************
 master is the main branch, autocreated by git
+A branch is a label for commit
 
-the head is the current checked out commit
+git branch shows branches; the current branch is starred
+git branch <branchname> creates a new branch
+git checkout <branchname> makes that the branch being operated on
+git checkout -b <branchname> # creates and switches to a branch
+git branch --merged # shows all branches completely merged into a branch
+git branch -m|--move <branchname> # renames a branch
+git branch -d <branchname> # deletes branch if it's merged into current branch
+git branch -D <branchname> # deletes branch even if it's not merged into current branch and commits could be lost
+deleting a branch after merging it into another branch just removes the label.  All the commits are still there.
+deleting a branch without merging it into another branch discards its commits- they all become unreachable.
 
-checking out an old commit without creating a branch gives detached head state
 
-if you check out a branch then make a commit, the branch label autoupdates to the new commit, and stays checked out.  Current last commit in a branch is the tip of that branch.
+if you check out a branch then make a commit, the branch label autoupdates to the new commit, and stays checked out.  
+Current last commit in a branch is the tip of that branch.
 
 A given commit can have multiple branch labels, but a new commit will only affect the branch which is checked out.
 
-git branch shows branches; the current branch is starred
-
-git branch <branchname> creates a new branch
-
-git checkout <branchname> makes that the branch being operated on
-
-
-git log --graph --oneline master <branch2> gives visual representation of commit history
-
-remote branch is created by someone else
-
-every commit stores id of its parent.  commit doesn't care about branches.
-
+checking out an old commit without creating a branch gives detached head state:
 if you
    -check out a commit that's not at the tip of a branch,
    -make a new commit from there, and
@@ -60,18 +154,75 @@ if you
    that commit is not reachable by any branch.
    It's lost unless you save its id.  Git log won't show it.
 
-git checkout -b newbranchname ==
-git branch newbranchname
-git checkout newbranchname
+git checkout master brings you back to the tip of the master branch if you checked out an older commit and 
+have a detached HEAD.
+
+# ********************************
+# Merging
+# ********************************
+To merge branch2 into branch1:
+git checkout <branch1>
+git merge <branch2>
+
+git merge <branch1 branch2...> merges all specified branches into currently checked out branch, so you 
+should always check out the branch you want to point to the new commit.
 
 git merge keeps all lines that are in both files
 removes a line that was in the original file and removed in one version
 adds a line that wasn't in the original file and was added in one version
 
-deleting a branch after merging it into another branch just removes the label.  All the commits are still there.
+fast-forward merge: branch1 hasn't changed since branch2 was created, so can simply move the HEAD for branch1 
+to the HEAD of branch2.  No new commit created.
 
-deleting a branch without merging it into another branch discards its commits- they all become unreachable.
+git merge -noff # creates a new commit if you want to add a comment at the merge point
+git merge -ffonly # don't do the merge if you can't do a fast-forward merge
 
+If there are merge conflicts:
+can do:
+git merge --abort
+or manually edit file(s).  Git marks conflicts for you in the files with arrows and = signs
+Then git add <file(s)>
+and git commit
+
+Best practices:
+Merge often
+"Track changes to master:"
+Merge master into your branch fairly often
+
+
+# ********************************
+# Stashing changes
+# ********************************
+To save changes you're not yet ready to commit:
+git stash save "<message>"
+Often used when you want to switch branches but aren't ready to commit your changes
+Also used if you made a change in the wrong branch because stash is available in all branches
+git stash list # shows what's in the stash
+git stash list -p # does a git diff with most recent commit
+# Items in the stash are denoted @{<#>} 
+
+git stash pop @{<#>} # brings files out of stash into working directory; pulls first files by default, which are @{0}
+git stash apply @{<#>} # brings files into working directory, but leaves them in the stash
+# Items brought out of the stash are put in whatever working directory and branch you're currently in
+git stash drop stash@{<#>} # gets rid of an item in stash
+git stash clear # gets rid of everything in stash
+
+********************************************************************
+
+
+
+
+
+
+
+
+
+repository has most recent commit
+staging area is copy of most recent commit until changes added
+working directory is copy of most recent commit until changes made to file(s)
+
+
+remote branch is created by someone else
 Git sorts commits based on the time they were created.
 
 
@@ -79,19 +230,17 @@ git show shows the changes introduced between (?? the current) commit and its pa
 
 git show commit_id shows the changes introduced between a commit and its parent
 
-git branch -d <branchname> deletes a branch
 
 git checkout master
 git merge master <branchname>
 This will make the merged branch the master
 
-You could check out a different branch, in which case the label for the checked out branch will point to the new merged commit
-
-git merge <branchname...> merges all specified branches into currently checked out branch, so you should always check out the branch you want to point to the new commit.
+You could check out a different branch, in which case the label for the checked out branch will point to the new 
+merged commit
 
 git merge uses the commit at point where the branches diverged and the contents of the branches being merged.
 
-git reset --hard HEAD~1 removes the last commit you've made.
+
 
 git gc does garbage collection for git, removing unreachable commits
 
