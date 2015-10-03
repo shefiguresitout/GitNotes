@@ -1,3 +1,63 @@
+Working with remotes (remote repositories):
+Remotes are exactly like branches
+origin/master is also exactly like a branch except that you can't check it out
+
+Workflow:
+Do commits locally
+Fetch latest from server
+Sync origin branch
+Merge new work
+Push up to remote
+
+
+Create our own repository:
+git remote add <remotealias> <url> # adds a remote; creates a mechanism by which can establish
+# connection with a remote
+# primary remote called origin, but this is just an alias; can be anything.
+# multiple remotes should have different names
+
+git remote # lists remotes git knows about
+git remote rm <remotealias> # removes remote
+
+Push puts a local branch on a branch of the remote repository
+git push -u <remotealias> <branch>
+# -u says you're tracking the remote; don't have to specify <remotealias> and <branch>
+# when doing fetches and pushes
+
+Work with someone else's repository:
+git clone is how you work with an existing repository
+
+
+git branch -r # shows remotes
+git branch -a # shows local and remote branches
+
+Branches other than master remain private unless pushed to the remote
+Master branch is what's cloned by default, though that's configurable.
+Can use -b to specify which branch you want to clone
+
+# origin/master is just another repository.  It doesn't sync with the remote unless you tell 
+# it to with:
+git fetch origin
+# This brings it into origin/master, not local master.  origin/master is just a local 
+# cached version of what's in the remote repository.  Best practice to fetch often. 
+
+# Have to merge master into origin/master:
+git merge origin/master
+
+git pull 
+# is a shortcut for:
+git fetch
+git merge
+# If there's been a change in the remote since you last fetched, you'll need to pull before you can push.
+
+git push <remotealias> --delete <branch> # deletes the remote branch
+
+To get a branch other than master from a remote:
+git branch <newbranch> <remotealias>/<otherbranch>
+git checkout -b <newbranch> <remotealias>/<otherbranch> #creates new branch from remote and also
+# checks it ou
+git branch <newbranch> <commit> # commit defaults to head, but could be any commit, including a 
+# remote one.
 
 GitHub
 ------
