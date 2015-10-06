@@ -207,20 +207,73 @@ git stash apply @{<#>} # brings files into working directory, but leaves them in
 git stash drop stash@{<#>} # gets rid of an item in stash
 git stash clear # gets rid of everything in stash
 
+=======
+Working with remotes (remote repositories):
+Remotes are exactly like branches
+origin/master is also exactly like a branch except that you can't check it out
+
+Workflow:
+Do commits locally
+Fetch latest from server
+Sync origin branch
+Merge new work
+Push up to remote
+
+
+Create our own repository:
+git remote add <remotealias> <url> # adds a remote; creates a mechanism by which can establish
+# connection with a remote
+# primary remote called origin, but this is just an alias; can be anything.
+# multiple remotes should have different names
+
+git remote # lists remotes git knows about
+git remote rm <remotealias> # removes remote
+
+Push puts a local branch on a branch of the remote repository
+git push -u <remotealias> <branch>
+# -u says you're tracking the remote; don't have to specify <remotealias> and <branch>
+# when doing fetches and pushes
+
+Work with someone else's repository:
+git clone is how you work with an existing repository
+
+
+git branch -r # shows remotes
+git branch -a # shows local and remote branches
+
+Branches other than master remain private unless pushed to the remote
+Master branch is what's cloned by default, though that's configurable.
+Can use -b to specify which branch you want to clone
+
+# origin/master is just another repository.  It doesn't sync with the remote unless you tell 
+# it to with:
+git fetch origin
+# This brings it into origin/master, not local master.  origin/master is just a local 
+# cached version of what's in the remote repository.  Best practice to fetch often. 
+
+# Have to merge master into origin/master:
+git merge origin/master
+
+git pull 
+# is a shortcut for:
+git fetch
+git merge
+# If there's been a change in the remote since you last fetched, you'll need to pull before you can push.
+
+git push <remotealias> --delete <branch> # deletes the remote branch
+
+To get a branch other than master from a remote:
+git branch <newbranch> <remotealias>/<otherbranch>
+git checkout -b <newbranch> <remotealias>/<otherbranch> #creates new branch from remote and also
+# checks it ou
+git branch <newbranch> <commit> # commit defaults to head, but could be any commit, including a 
+# remote one.
+
+
+
 # ********************************
-# Stashing changes
+# Edit this into the notes:
 # ********************************
-
-
-********************************************************************
-
-
-
-
-
-
-
-
 
 repository has most recent commit
 staging area is copy of most recent commit until changes added
@@ -248,6 +301,66 @@ git merge uses the commit at point where the branches diverged and the contents 
 
 
 git gc does garbage collection for git, removing unreachable commits
+
+GitHub
+------
+
+To create a remote repository on GitHub:
+Click the plus sign and select "new repository"
+git remote add origin https://github.com/shefiguresitout/GitNotes.git
+git remote add <repositoryname> <url>
+standard is to name single remote origin
+url comes from the github page where new repository was created
+git push -u origin master
+git push <remote> <local branch>
+
+what you send and receive from remotes is commits, but instead of selecting each individual commit, the most common way to send and receive data is by specifying a branch.  This will cause all of its commits to be sent.  Only new commits will be sent, not those that are already in the remote.  Commits that are not reachable from the specified branch also will not be sent.
+
+git remote [-v] views and creates remotes
+
+git push origin <branch>
+git pull origin <branch> pulls down changes made on GitHub
+
+by default, the remote branch will have the same name as the local branch
+when you have a remote branch, git stores a local copy of it.  
+The local copy contains the state of the remote branch as of the last time you pushed or pulled it.
+the local copy of the remote branch is called origin/<branchname>, eg origin/master.
+git push updates the local orgin/<brachname> branch and the remote github branch to the latest commit in the local branch
+git pull updates the local branch and the local origin/<branchanem> if the remote github branch is updated
+git fetch updates just the local copy of the remote branch, origin/<branchname>, leaving local version alone.
+If there are changes on the remote, and changes to the local version, this allows you to use log and diff to see what's changed on both the local and remote repositories without updating your local version.
+You can then merge the changes from the remote repository into the local repository with
+git merge <branch> origin/<branch>
+
+git pull origin <branch> is equal to:
+git fetch origin
+git merge <branch> origin/<branch>
+
+can create and edit plain text files on github
+git pull is used when there have been changes on github that aren't in the local repository
+
+
+forking allows you to make a copy of somebody else's repository directly on github, without pulling down to your local machine first.  
+Can then pull down the code to your local machine unless files are simple enough to edit directly on github.  
+Links back to the original repository
+Forking is a lot like cloning; fork is a clone GitHub makes for you on their machines.  Keeps link back to original repo.  Keeps track of how many people have forked.  Makes it easy to make changes to original repo.
+To create a fork, go to the page for the repo; click the fork button in the upper right corner.
+fork only happens on github: making a copy of an existing github repository
+cloning happens on a local machine or between github and a local machine.  It makes a copy of an existing repository
+
+when you clone a repository, github automatically sets up a remote pointing to the repository you cloned from
+
+settings>collaborators><github username> allows other users to push to your repository
+
+fast forward merge: branch you're merging into is an ancestor of the branch you're merging from; taking a label from somewhere in a branch and moving it to the tip
+
+Collaborate:
+make change locally in separate branch
+push that branch to github:
+git push origin <separate-branch>
+create pull request by checking out the branch and clicking on pull request, click edit to the right
+
+pull request asks to merge my changes into someone else's repository, ie asking that person to pull my changes into their repository
 
 
 

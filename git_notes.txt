@@ -1,0 +1,65 @@
+
+GitHub
+------
+
+To create a remote repository on GitHub:
+Click the plus sign and select "new repository"
+git remote add origin https://github.com/shefiguresitout/GitNotes.git
+git remote add <repositoryname> <url>
+standard is to name single remote origin
+url comes from the github page where new repository was created
+git push -u origin master
+git push <remote> <local branch>
+
+what you send and receive from remotes is commits, but instead of selecting each individual commit, the most common way to send and receive data is by specifying a branch.  This will cause all of its commits to be sent.  Only new commits will be sent, not those that are already in the remote.  Commits that are not reachable from the specified branch also will not be sent.
+
+git remote [-v] views and creates remotes
+
+git push origin <branch>
+git pull origin <branch> pulls down changes made on GitHub
+
+by default, the remote branch will have the same name as the local branch
+when you have a remote branch, git stores a local copy of it.  
+The local copy contains the state of the remote branch as of the last time you pushed or pulled it.
+the local copy of the remote branch is called origin/<branchname>, eg origin/master.
+git push updates the local orgin/<brachname> branch and the remote github branch to the latest commit in the local branch
+git pull updates the local branch and the local origin/<branchanem> if the remote github branch is updated
+git fetch updates just the local copy of the remote branch, origin/<branchname>, leaving local version alone.
+If there are changes on the remote, and changes to the local version, this allows you to use log and diff to see what's changed on both the local and remote repositories without updating your local version.
+You can then merge the changes from the remote repository into the local repository with
+git merge <branch> origin/<branch>
+
+git pull origin <branch> is equal to:
+git fetch origin
+git merge <branch> origin/<branch>
+
+can create and edit plain text files on github
+git pull is used when there have been changes on github that aren't in the local repository
+
+
+forking allows you to make a copy of somebody else's repository directly on github, without pulling down to your local machine first.  
+Can then pull down the code to your local machine unless files are simple enough to edit directly on github.  
+Links back to the original repository
+Forking is a lot like cloning; fork is a clone GitHub makes for you on their machines.  Keeps link back to original repo.  Keeps track of how many people have forked.  Makes it easy to make changes to original repo.
+To create a fork, go to the page for the repo; click the fork button in the upper right corner.
+fork only happens on github: making a copy of an existing github repository
+cloning happens on a local machine or between github and a local machine.  It makes a copy of an existing repository
+
+when you clone a repository, github automatically sets up a remote pointing to the repository you cloned from
+
+settings>collaborators><github username> allows other users to push to your repository
+
+fast forward merge: branch you're merging into is an ancestor of the branch you're merging from; taking a label from somewhere in a branch and moving it to the tip
+
+Collaborate:
+make change locally in separate branch
+push that branch to github:
+git push origin <separate-branch>
+create pull request by checking out the branch and clicking on pull request, click edit to the right
+
+pull request asks to merge my changes into someone else's repository, ie asking that person to pull my changes into their repository
+
+
+
+
+
