@@ -207,6 +207,11 @@ git stash apply @{<#>} # brings files into working directory, but leaves them in
 git stash drop stash@{<#>} # gets rid of an item in stash
 git stash clear # gets rid of everything in stash
 
+# ********************************
+# Stashing changes
+# ********************************
+
+
 ********************************************************************
 
 
