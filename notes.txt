@@ -28,7 +28,7 @@ git log --format=short|medium|full|fuller|email|raw # medium is default
 
 git show <SHA> # shows what happened in a commit
 # ********************************
-# 
+# Workflow
 # ********************************
 Typical workflow:
 edit file(s), add file(s), commit change
@@ -207,8 +207,10 @@ git stash apply @{<#>} # brings files into working directory, but leaves them in
 git stash drop stash@{<#>} # gets rid of an item in stash
 git stash clear # gets rid of everything in stash
 
-=======
-Working with remotes (remote repositories):
+# ********************************
+# Working with remotes (remote repositories)
+# ********************************
+
 Remotes are exactly like branches
 origin/master is also exactly like a branch except that you can't check it out
 
