@@ -97,6 +97,8 @@ git reset --hard HEAD~1 removes the last commit you've made.
 git reset --soft moves HEAD pointer, doesn't change staging index and working directory
 git reset --mixed moves HEAD, clears staging index
 
+git reset --hard origin/master resets the current branch to be the same as the last git pull
+
 To get rid of untracked files:
 git clean -n # shows what would be removed
 git clean -f # forces the removal to happen
@@ -235,7 +237,7 @@ Push puts a local branch on a branch of the remote repository
 git push -u <remotealias> <branch>
 # -u says you're tracking the remote; don't have to specify <remotealias> and <branch>
 # when doing fetches and pushes
-
+git push -u origin <localbranch> creates a new branch on the remote called <localbranch>
 Work with someone else's repository:
 git clone is how you work with an existing repository
 
@@ -267,7 +269,7 @@ git push <remotealias> --delete <branch> # deletes the remote branch
 To get a branch other than master from a remote:
 git branch <newbranch> <remotealias>/<otherbranch>
 git checkout -b <newbranch> <remotealias>/<otherbranch> #creates new branch from remote and also
-# checks it ou
+# checks it out
 git branch <newbranch> <commit> # commit defaults to head, but could be any commit, including a 
 # remote one.
 
